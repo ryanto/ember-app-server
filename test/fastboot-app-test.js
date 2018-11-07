@@ -57,7 +57,7 @@ describe('Fastboot app middleware', function() {
     expect(res.get('x-from-fastboot')).to.equal('with love');
   });
 
-  it('should get a header set by fastboot', async function() {
+  it('should get the status code from fastboot', async function() {
     let { app, middleware } = await emberApp.prepare();
     app.use(middleware.fastbootApp);
 
@@ -78,18 +78,16 @@ describe('Fastboot app middleware', function() {
   });
 
   it('should expose a function that renders a fastboot app', async function() {
-    let { fastboot } = await emberApp.prepare();
+    let { output } = await emberApp.prepare();
 
-    let result = await fastboot.generateResponse({
+    let { statusCode, html } = await output.fastboot.generate({
       url: '/a-fastboot-route',
       headers: {
         cookie: ''
       }
     }, {});
 
-    let html = await result.html();
-
-    expect(result.statusCode).to.equal(200);
+    expect(statusCode).to.equal(200);
     expect(html).to.include('this route was rendered by fastboot');
   });
 

@@ -5,8 +5,8 @@ let express = require('express');
 let cluster = require('cluster');
 let clientAppMiddleware = require('./middleware/client-app');
 let fastbootMiddleware = require('./middleware/fastboot');
-let path = require('path');
-let fs = require('fs');
+let ClientAppOutput = require('./output/client-app');
+let FastbootOutput = require('./output/fastboot');
 
 class AppServer {
   constructor(options) {
@@ -45,36 +45,13 @@ class AppServer {
             return clientAppMiddleware(appServer.distPath);
           }
         },
+        output: {
+          fastboot: new FastbootOutput(appServer),
+          clientApp: new ClientAppOutput(appServer),
+        },
         config: {
           get distPath() {
             return appServer.distPath;
-          }
-        },
-        fastboot: {
-          async generateResponse(req, res) {
-            let fastboot = appServer.fastboot;
-            let result = {};
-
-            try {
-              result = await fastboot.visit(req.url, {
-                request: req,
-                response: res
-              });
-
-            } catch(error) {
-              // ignore errors for now
-            }
-
-            return result;
-          }
-        },
-        client: {
-          generateResponse() {
-            let distPath = appServer.distPath;
-            let htmlFile = path.join(distPath, 'index.html');
-            return {
-              html: fs.readFileSync(htmlFile)
-            };
           }
         }
       };
