@@ -62,7 +62,6 @@ class AppServer {
               });
 
             } catch(error) {
-              console.log(error);
               // ignore errors for now
             }
 
