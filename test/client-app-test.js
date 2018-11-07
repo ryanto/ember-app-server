@@ -59,6 +59,15 @@ describe('Client app middleware', function() {
     expect(res.text).to.include('<link integrity="" rel="stylesheet" href="/assets/vendor.css">');
   });
 
+  it('should expose a function to render a client app', async function() {
+    let { client } = await emberApp.prepare();
+
+    let { html } = client.generateResponse();
+
+    expect(html.toString()).to.include('<script src="/assets/vendor.js"></script>');
+    expect(html.toString()).to.include('<link integrity="" rel="stylesheet" href="/assets/vendor.css">');
+  });
+
   it('should serve assets', async function() {
     let { app, middleware } = await emberApp.prepare();
     app.use(middleware.clientApp);
