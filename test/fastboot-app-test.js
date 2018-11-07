@@ -77,6 +77,22 @@ describe('Fastboot app middleware', function() {
     expect(res.text).to.include('ReferenceError: document is not defined');
   });
 
+  it('should expose a function that renders a fastboot app', async function() {
+    let { fastboot } = await emberApp.prepare();
+
+    let result = await fastboot.generateResponse({
+      url: '/a-fastboot-route',
+      headers: {
+        cookie: ''
+      }
+    }, {});
+
+    let html = await result.html();
+
+    expect(result.statusCode).to.equal(200);
+    expect(html).to.include('this route was rendered by fastboot');
+  });
+
   it('should serve assets', async function() {
     let { app, middleware } = await emberApp.prepare();
     app.use(middleware.fastbootApp);
