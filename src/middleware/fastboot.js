@@ -12,7 +12,7 @@ let makeMiddleware = function(fastboot) {
   }
 
   let fastbootMiddleware = async function(req, res, next) {
-    let path = req.url;
+    let path = req.originalUrl;
 
     try {
       let result = await fastboot.visit(path, { request: req, response: res });

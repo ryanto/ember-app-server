@@ -3,7 +3,8 @@
   "version": "0.0.4",
   "license": "MIT",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "test:watch": "mocha -w"
   },
   "dependencies": {
     "debug": "^3.1.0",

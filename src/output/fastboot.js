@@ -9,19 +9,22 @@ class FastbootOutput {
     let result = {};
 
     try {
-      fastbootResult = await fastboot.visit(req.url, {
+      fastbootResult = await fastboot.visit(req.originalUrl, {
         request: req,
         response: res
       });
 
+      // console.log(fastbootResult);
+
+      result.error = fastbootResult.error;
       result.statusCode = fastbootResult.statusCode;
 
     } catch(error) {
-      fastbootResult = {}
+      result = { error };
     }
 
     // if we get a 200 lets start unpacking the fastboot object
-    if (fastbootResult.statusCode === 200) {
+    if (fastbootResult.statusCode >= 200) {
       result.html = await fastbootResult.html();
 
       let headerKeys = Array.from(fastbootResult.headers.keys());

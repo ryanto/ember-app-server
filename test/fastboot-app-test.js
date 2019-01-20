@@ -81,7 +81,7 @@ describe('Fastboot app middleware', function() {
     let { output } = await emberApp.prepare();
 
     let { statusCode, html } = await output.fastboot.generate({
-      url: '/a-fastboot-route',
+      originalUrl: '/a-fastboot-route',
       headers: {
         cookie: ''
       }
@@ -89,6 +89,19 @@ describe('Fastboot app middleware', function() {
 
     expect(statusCode).to.equal(200);
     expect(html).to.include('this route was rendered by fastboot');
+  });
+
+  it('should give an error when it cannot render a page', async function() {
+    let { output } = await emberApp.prepare();
+
+    let { error } = await output.fastboot.generate({
+      originalUrl: '/buggy-route',
+      headers: {
+        cookie: ''
+      }
+    }, {});
+
+    expect(error.message).to.include('document is not defined');
   });
 
   it('should serve assets', async function() {

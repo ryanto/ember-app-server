@@ -35,6 +35,8 @@ class AppServer {
     } else {
       let appServer = this;
 
+      debug('ready', process.pid);
+
       return {
         app: this.expressApp,
         middleware: {
