@@ -408,7 +408,7 @@ catch(err) {
 
 if (typeof FastBoot === 'undefined') {
   if (!runningTests) {
-    require('scenario-2-fastboot/app')['default'].create({"name":"scenario-2-fastboot","version":"0.0.0+1f914867"});
+    require('scenario-2-fastboot/app')['default'].create({"name":"scenario-2-fastboot","version":"v0.0.5+dc97e9b5"});
   }
 }
 
